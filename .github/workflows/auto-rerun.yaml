@@ -1,0 +1,15 @@
+name: Auto Rerun Failed Jobs
+
+on:
+#    check_suite:
+#        types:
+#            - completed
+    issue_comment:
+        types: [created]
+
+jobs:
+    rerun:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Add a comment
+                run: 'gh api --method POST -H "Accept: application/vnd.github+json" /repos/jakubtobiasz/Sylius/issues/${{ github.event.issue.number }}/comments -f body="Me too"'
