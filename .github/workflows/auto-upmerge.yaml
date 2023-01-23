@@ -1,0 +1,23 @@
+name: Upmerge
+
+on:
+    push:
+        branches:
+            - 1.11
+            - 1.12
+            - 1.13
+            - ci/auto-upmerge
+
+jobs:
+    upmerge:
+        name: Upmerge
+        runs-on: ubuntu-latest
+        
+        steps:
+            -   uses: actions/checkout@v3
+                
+            -
+                name: "Create an upmerge PR"
+                run: gh pr create --title "[Test] Upmerge PR" -B "1.13" -b "Upmerge"
+                env:
+                    GH_TOKEN: ${{ github.token }}
