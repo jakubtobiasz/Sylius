@@ -9,7 +9,7 @@ on:
 jobs:
     upmerge:
         runs-on: ubuntu-latest
-        if: github.repository == 'Sylius/Sylius'
+        if: github.repository == 'jakubtobiasz/Sylius'
         name: "Upmerge PR"
         timeout-minutes: 5
         strategy:
