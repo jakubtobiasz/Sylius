@@ -24,13 +24,13 @@ jobs:
             -
                 uses: actions/checkout@v3
                 with:
-                    ref: ${{ matrix.base_branch }}
+                    ref: ${{ matrix.target_branch }}
 
-            -
-                name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: 8.0
+            -   
+                name: Reset upmerge branch
+                run: |
+                    git fetch origin ${{ matrix.base_branch }}:${{ matrix.base_branch }}
+                    git reset --hard ${{ matrix.base_branch }}
 
             -
                 name: Create Pull Request
