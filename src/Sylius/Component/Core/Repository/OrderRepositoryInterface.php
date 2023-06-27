@@ -30,7 +30,7 @@ interface OrderRepositoryInterface extends BaseOrderRepositoryInterface
 {
     public function createListQueryBuilder(): QueryBuilder;
 
-    public function createSearchListQueryBuilder(): QueryBuilder;
+    public function createSearchListQueryBuilder(?array $criteria = []): QueryBuilder;
 
     public function createByCustomerIdQueryBuilder($customerId): QueryBuilder;
 

@@ -56,13 +56,34 @@ class OrderRepository extends BaseOrderRepository implements OrderRepositoryInte
         ;
     }
 
-    public function createSearchListQueryBuilder(): QueryBuilder
+    /**
+     * @param array{product: string, variant: string}|null $criteria
+     */
+    public function createSearchListQueryBuilder(?array $criteria = null): QueryBuilder
     {
-        return $this->createListQueryBuilder()
-            ->leftJoin('o.items', 'item')
-            ->leftJoin('item.variant', 'variant')
-            ->leftJoin('variant.product', 'product')
-        ;
+        if ($criteria === null) {
+            return $this->createListQueryBuilder();
+        }
+
+        $hasProductCriteria = '' !== $criteria['product'];
+        $hasVariantCriteria = '' !== $criteria['variant'];
+
+        $queryBuilder = $this->createListQueryBuilder();
+
+        if ($hasVariantCriteria || $hasProductCriteria) {
+            $queryBuilder
+                ->leftJoin('o.items', 'item')
+                ->leftJoin('item.variant', 'variant')
+            ;
+        }
+
+        if ($hasProductCriteria) {
+            $queryBuilder
+                ->leftJoin('variant.product', 'product')
+            ;
+        }
+
+        return $queryBuilder;
     }
 
     public function createByCustomerIdQueryBuilder($customerId): QueryBuilder
