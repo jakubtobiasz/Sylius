@@ -5,6 +5,7 @@
   "author": "Sylius Sp. z o.o.",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@sylius-ui/admin": "file:src/Sylius/Bundle/AdminBundle",
     "chart.js": "^3.7.1",
     "jquery": "^3.5.0",
     "jquery.dirtyforms": "^2.0.0",
@@ -66,7 +67,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sylius/Sylius.git"
-  },
-  "author": "Sylius Sp. z o.o.",
-  "license": "MIT"
+  }
 }
