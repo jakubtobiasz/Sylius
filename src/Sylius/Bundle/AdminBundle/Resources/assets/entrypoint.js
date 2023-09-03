@@ -12,3 +12,5 @@ import './scripts/apexcharts';
 import './scripts/choices';
 
 import 'bootstrap';
+
+import './img/sylius-logo.svg';

@@ -1,0 +1,20 @@
+{% from '@SyliusAdmin/Shared/Component/_icon.html.twig' import icon %}
+
+{% include '@SyliusAdmin/Shared/Component/_toggler.html.twig' with { id: 'navbar-menu'} only %}
+
+<div class="navbar-nav order-md-last">
+    {# Notifications #}
+    <div class="nav-item">
+        {{ component('NavbarNotifications') }}
+    </div>
+
+    {# User menu #}
+    <div class="nav-item ms-3">
+        {% include '@SyliusAdmin/Shared/Component/Navbar/_user.html.twig' with { user: app.user } only %}
+    </div>
+</div>
+
+{# Search #}
+<div class="collapse navbar-collapse" id="navbar-menu">
+{#    {% include '_search.html' %}#}
+</div>

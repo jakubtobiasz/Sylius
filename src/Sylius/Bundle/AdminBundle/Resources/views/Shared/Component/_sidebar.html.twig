@@ -1,0 +1,19 @@
+{# Toggler #}
+{% include '@SyliusAdmin/Shared/Component/_toggler.html.twig' with { id: 'sidebar-menu '} only %}
+
+{# Brand #}
+<h1 class="navbar-brand">
+    <a href="{{ path('sylius_admin_dashboard') }}">
+        <img src="{{ asset('build/admin/images/sylius-logo.svg', 'admin') }}" alt="Sylius" class="navbar-brand-image" />
+    </a>
+</h1>
+
+{# User #}
+<div class="d-lg-none">
+{#    {% include '_user.html' with { user: navbar.user } only %}#}
+</div>
+
+{# Sidebar nav #}
+<div class="collapse navbar-collapse" id="sidebar-menu">
+{#    {% include '_sidebar-nav.html' with { items: nav } only %}#}
+</div>

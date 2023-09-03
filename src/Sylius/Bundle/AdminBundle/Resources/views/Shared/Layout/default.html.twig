@@ -1,0 +1,27 @@
+{% extends '@SyliusAdmin/Shared/Layout/base.html.twig' %}
+
+{% block body %}
+    <div class="page">
+        <aside class="navbar navbar-vertical navbar-expand-lg d-print-none" data-bs-theme="dark">
+            <div class="container-fluid">
+                {% block sidebar %}
+                    {% include '@SyliusAdmin/Shared/Component/_sidebar.html.twig' %}
+                {% endblock %}
+            </div>
+        </aside>
+
+        <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
+            <div class="container-xl">
+                {% block navbar %}
+                    {% include '@SyliusAdmin/Shared/Component/_navbar.html.twig' %}
+                {% endblock %}
+            </div>
+        </header>
+
+        <div class="page-wrapper">
+            {% block content %}{% endblock %}
+
+            {% include '@SyliusAdmin/Shared/Component/_footer.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
