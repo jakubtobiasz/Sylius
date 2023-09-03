@@ -9,12 +9,14 @@
 
     {% block metatags %}{% endblock %}
     {{ encore_entry_link_tags('admin-entry', null, 'admin') }}
+    {{ sylius_template_event('sylius.admin.stylesheets') }}
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 {% block body %}{% endblock %}
 
 {{ encore_entry_script_tags('admin-entry', null, 'admin') }}
-{% block javascript %}{% endblock %}
+{{ sylius_template_event('sylius.admin.javascripts') }}
+{% block javascripts %}{% endblock %}
 </body>
 </html>
