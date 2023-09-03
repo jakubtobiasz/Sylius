@@ -17,19 +17,24 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class MainMenuBuilder
 {
     public const EVENT_NAME = 'sylius.menu.admin.main';
 
-    public function __construct(private FactoryInterface $factory, private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private FactoryInterface $factory,
+        private EventDispatcherInterface $eventDispatcher,
+        private RouterInterface $router,
+    ) {
     }
 
     public function createMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
 
+        $this->addDashboardSubmenu($menu);
         $this->addCatalogSubMenu($menu);
         $this->addSalesSubMenu($menu);
         $this->addCustomersSubMenu($menu);
@@ -41,11 +46,22 @@ final class MainMenuBuilder
         return $menu;
     }
 
+    private function addDashboardSubmenu(ItemInterface $menu): void
+    {
+        $menu
+            ->addChild('dashboard')
+            ->setLabel('sylius.ui.dashboard')
+            ->setLabelAttribute('icon', 'dashboard')
+            ->setUri($this->router->generate('sylius_admin_dashboard'))
+        ;
+    }
+
     private function addCatalogSubMenu(ItemInterface $menu): void
     {
         $catalog = $menu
             ->addChild('catalog')
             ->setLabel('sylius.menu.admin.main.catalog.header')
+            ->setLabelAttribute('icon', 'list-details')
         ;
 
         $catalog
@@ -54,7 +70,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_taxon_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.catalog.taxons')
-            ->setLabelAttribute('icon', 'folder')
         ;
 
         $catalog
@@ -69,13 +84,11 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_product_variant_generate'],
             ]]])
             ->setLabel('sylius.menu.admin.main.catalog.products')
-            ->setLabelAttribute('icon', 'cube')
         ;
 
         $catalog
             ->addChild('inventory', ['route' => 'sylius_admin_inventory_index'])
             ->setLabel('sylius.menu.admin.main.catalog.inventory')
-            ->setLabelAttribute('icon', 'history')
         ;
 
         $catalog
@@ -84,7 +97,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_product_attribute_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.catalog.attributes')
-            ->setLabelAttribute('icon', 'cubes')
         ;
 
         $catalog
@@ -93,7 +105,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_product_option_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.catalog.options')
-            ->setLabelAttribute('icon', 'options')
         ;
 
         $catalog
@@ -102,7 +113,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_product_association_type_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.catalog.association_types')
-            ->setLabelAttribute('icon', 'tasks')
         ;
     }
 
@@ -111,6 +121,7 @@ final class MainMenuBuilder
         $customers = $menu
             ->addChild('customers')
             ->setLabel('sylius.menu.admin.main.customers.header')
+            ->setLabelAttribute('icon', 'users')
         ;
 
         $customers
@@ -120,7 +131,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_customer_show'],
             ]]])
             ->setLabel('sylius.menu.admin.main.customers.customers')
-            ->setLabelAttribute('icon', 'users')
         ;
 
         $customers
@@ -129,7 +139,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_customer_group_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.customers.groups')
-            ->setLabelAttribute('icon', 'archive')
         ;
     }
 
@@ -138,6 +147,7 @@ final class MainMenuBuilder
         $marketing = $menu
             ->addChild('marketing')
             ->setLabel('sylius.menu.admin.main.marketing.header')
+            ->setLabelAttribute('icon', 'percentage')
         ;
 
         $marketing
@@ -150,7 +160,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_promotion_coupon_generate'],
             ]]])
             ->setLabel('sylius.menu.admin.main.marketing.cart_promotions')
-            ->setLabelAttribute('icon', 'in cart')
         ;
 
         $marketing
@@ -160,7 +169,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_catalog_promotion_show'],
             ]]])
             ->setLabel('sylius.menu.admin.main.marketing.catalog_promotions')
-            ->setLabelAttribute('icon', 'bookmark')
         ;
 
         $marketing
@@ -168,7 +176,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_product_review_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.marketing.product_reviews')
-            ->setLabelAttribute('icon', 'newspaper')
         ;
     }
 
@@ -177,6 +184,7 @@ final class MainMenuBuilder
         $sales = $menu
             ->addChild('sales')
             ->setLabel('sylius.menu.admin.main.sales.header')
+            ->setLabelAttribute('icon', 'shopping-bag')
         ;
 
         $sales
@@ -186,13 +194,11 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_order_history'],
             ]]])
             ->setLabel('sylius.menu.admin.main.sales.orders')
-            ->setLabelAttribute('icon', 'cart')
         ;
 
         $sales
             ->addChild('payments', ['route' => 'sylius_admin_payment_index'])
             ->setLabel('sylius.ui.payments')
-            ->setLabelAttribute('icon', 'payment')
         ;
 
         $sales
@@ -200,7 +206,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_shipment_show'],
             ]]])
             ->setLabel('sylius.ui.shipments')
-            ->setLabelAttribute('icon', 'truck')
         ;
     }
 
@@ -209,6 +214,7 @@ final class MainMenuBuilder
         $configuration = $menu
             ->addChild('configuration')
             ->setLabel('sylius.menu.admin.main.configuration.header')
+            ->setLabelAttribute('icon', 'adjustments')
         ;
 
         $configuration
@@ -217,7 +223,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_channel_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.channels')
-            ->setLabelAttribute('icon', 'random')
         ;
 
         $configuration
@@ -226,7 +231,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_country_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.countries')
-            ->setLabelAttribute('icon', 'flag')
         ;
 
         $configuration
@@ -235,7 +239,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_zone_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.zones')
-            ->setLabelAttribute('icon', 'world')
         ;
 
         $configuration
@@ -244,7 +247,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_currency_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.currencies')
-            ->setLabelAttribute('icon', 'dollar')
         ;
 
         $configuration
@@ -253,7 +255,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_exchange_rate_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.exchange_rates')
-            ->setLabelAttribute('icon', 'sliders')
         ;
 
         $configuration
@@ -262,7 +263,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_locale_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.locales')
-            ->setLabelAttribute('icon', 'translate')
         ;
 
         $configuration
@@ -271,7 +271,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_payment_method_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.payment_methods')
-            ->setLabelAttribute('icon', 'payment')
         ;
 
         $configuration
@@ -280,7 +279,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_shipping_method_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.shipping_methods')
-            ->setLabelAttribute('icon', 'shipping')
         ;
 
         $configuration
@@ -289,7 +287,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_shipping_category_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.shipping_categories')
-            ->setLabelAttribute('icon', 'list layout')
         ;
 
         $configuration
@@ -298,7 +295,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_tax_category_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.tax_categories')
-            ->setLabelAttribute('icon', 'tags')
         ;
 
         $configuration
@@ -307,7 +303,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_tax_rate_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.tax_rates')
-            ->setLabelAttribute('icon', 'money')
         ;
 
         $configuration
@@ -316,7 +311,6 @@ final class MainMenuBuilder
                 ['route' => 'sylius_admin_admin_user_update'],
             ]]])
             ->setLabel('sylius.menu.admin.main.configuration.admin_users')
-            ->setLabelAttribute('icon', 'lock')
         ;
     }
 }

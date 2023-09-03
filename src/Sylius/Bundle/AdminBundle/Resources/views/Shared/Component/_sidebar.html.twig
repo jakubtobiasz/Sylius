@@ -15,5 +15,5 @@
 
 {# Sidebar nav #}
 <div class="collapse navbar-collapse" id="sidebar-menu">
-{#    {% include '_sidebar-nav.html' with { items: nav } only %}#}
+    {{ knp_menu_render('sylius.admin.main', {'template': '@SyliusAdmin/Shared/Component/Sidebar/_menu.html.twig', 'currentClass': 'active'}) }}
 </div>
