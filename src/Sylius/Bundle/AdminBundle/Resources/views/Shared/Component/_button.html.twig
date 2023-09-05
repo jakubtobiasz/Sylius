@@ -48,12 +48,20 @@
 
 {% macro primary(params = {}) %}
     {% import _self as _ %}
+    {% set params = {
+        class: null,
+    }|merge(params) %}
+
     {% set newParams = params|merge({ class: 'btn-primary ' ~ params.class }) %}
     {{ _.default(newParams) }}
 {% endmacro %}
 
 {% macro delete(params = {}) %}
     {% import _self as _ %}
+    {% set params = {
+        class: null,
+    }|merge(params) %}
+
     {% set newParams = { text: 'Delete' }|merge(params)|merge({ class: 'btn btn-ghost-danger ' ~ params.class }) %}
     {{ _.default(newParams) }}
 {% endmacro %}

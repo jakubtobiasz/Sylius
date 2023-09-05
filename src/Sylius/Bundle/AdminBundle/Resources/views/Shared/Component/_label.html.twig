@@ -1,0 +1,49 @@
+{% from '@SyliusAdmin/Shared/Component/_icon.html.twig' import icon %}
+
+{% macro default(text) %}
+    <span class="ui label">{{ text|trans }}</span>
+{% endmacro %}
+
+{% macro status(status) %}
+    {% import _self as labels %}
+
+    {% if status %}
+        {{ labels.enabled() }}
+    {% else %}
+        {{ labels.disabled() }}
+    {% endif %}
+{% endmacro %}
+
+{% macro enabled() %}
+    {% import _self as _ %}
+
+    {{ _.yes() }}
+{% endmacro %}
+
+{% macro disabled() %}
+    {% import _self as _ %}
+
+    {{ _.no() }}
+{% endmacro %}
+
+{% macro yesNo(value) %}
+    {% import _self as _ %}
+
+    {% if value %}
+        {{ _.yes() }}
+    {% else %}
+        {{ _.no() }}
+    {% endif %}
+{% endmacro %}
+
+{% macro yes() %}
+    {% from '@SyliusAdmin/Shared/Component/_icon.html.twig' import icon %}
+
+    <span>{{ icon({ icon: 'check', class: 'icon text-green' }) }}</span>
+{% endmacro %}
+
+{% macro no() %}
+    {% from '@SyliusAdmin/Shared/Component/_icon.html.twig' import icon %}
+
+    <span>{{ icon({ icon: 'x', class: 'icon icon-sm text-secondary' }) }}</span>
+{% endmacro %}

@@ -15,6 +15,11 @@ sylius:
                 password:
                     label: New password
                     confirmation: Confirm new password
+    grid:
+        add_your_first:
+            inventory: 'Add your first inventory'
+        no_results: 'No results found'
+        no_results_adjust_your_search: 'Try adjusting your search or filter to find what you''re looking for.'
     menu:
         admin:
             main:

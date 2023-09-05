@@ -14,3 +14,5 @@ sylius_admin_inventory_index:
                     breadcrumb: "@SyliusAdmin/Inventory/Index/_breadcrumb.html.twig"
                 header: sylius.ui.inventory
                 subheader: sylius.ui.manage_inventory
+                no_result:
+                    create: sylius.grid.create_your_first.inventory

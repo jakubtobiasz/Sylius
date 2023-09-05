@@ -1,13 +1,16 @@
 {% macro tableHeader(grid, field, attributes) %}
     {% from _self import link %}
+    {% from '@SyliusAdmin/Shared/Component/_icon.html.twig' import icon %}
+
     {% set order = grid.getSortingOrder(field.name) %}
 
     {% if grid.isSortedBy(field.name) %}
-        <th class="sortable sorted {{ order == 'desc' ? 'descending' : 'ascending' }} sylius-table-column-{{ field.name }}">
+        <th>
             <a href="{{ link(field.name, attributes, (order == 'desc' ? 'asc' : 'desc'), grid.parameters.all) }}">{{ field.label|trans }}</a>
+            {{ icon({ icon: order == 'desc' ? 'chevron-down' : 'chevron-up', class: 'icon icon-sm' }) }}
         </th>
     {% else %}
-        <th class="sortable sylius-table-column-{{ field.name }}">
+        <th>
             <a href="{{ link(field.name, attributes, order, grid.parameters.all) }}">{{ field.label|trans }}<i class="sort icon"></i></a>
         </th>
     {% endif %}

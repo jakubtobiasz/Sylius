@@ -1,0 +1,48 @@
+{% import "@SyliusAdmin/Shared/Component/_button.html.twig" as button %}
+
+<div class="bg-white mb-5">
+    {% set content %}
+        <div class="mb-3">
+            <form method="get" action="{{ path }}" class="ui loadable form" novalidate>
+                <div class="sylius-filters">
+                    {% for filter in definition.enabledFilters|filter(filter => filter.enabled)|sort_by('position') %}
+                        <div class="sylius-filters__field">
+                            {{ sylius_grid_render_filter(grid, filter) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {# TODO: Make these buttons working #}
+                <div>
+                    {{ button.primary({ text: 'Filter', type: 'submit' }) }}
+                    {{ button.default({ text: 'Clear filters', url: path }) }}
+                </div>
+            </form>
+        </div>
+    {% endset %}
+
+    {% include '@SyliusAdmin/Shared/Component/_accordion.html.twig' with { items: [{
+        title: 'Filters',
+        content: content,
+    }]} only %}
+</div>
+
+{#{% import '@SyliusUi/Macro/buttons.html.twig' as buttons %}#}
+
+{#{% if definition.enabledFilters|length > 0 %}#}
+{#    <div class="ui hidden divider"></div>#}
+{#    <div class="ui styled fluid accordion">#}
+{#        <div class="content {% if criteria is not null %}active{% endif %}">#}
+{#            <form method="get" action="{{ path }}" class="ui loadable form" novalidate>#}
+{#                <div class="sylius-filters">#}
+{#                    {% for filter in definition.enabledFilters|filter(filter => filter.enabled)|sort_by('position') %}#}
+{#                        <div class="sylius-filters__field">#}
+{#                            {{ sylius_grid_render_filter(grid, filter) }}#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#                {{ buttons.filter() }}#}
+{#                {{ buttons.resetFilters(path) }}#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endif %}#}

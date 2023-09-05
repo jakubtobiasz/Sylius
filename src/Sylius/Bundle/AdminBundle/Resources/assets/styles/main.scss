@@ -8,6 +8,8 @@
  */
 
 $assets-base: $assetsPath;
+$primary: #1ABB9C;
+$hover-bg: rgba(102, 115, 130, 0.04); // fix for not working hovering on dropdown's items
 
 @import "choices.js/src/styles/choices.scss";
 @import "@tabler/core/src/scss/tabler.scss";
