@@ -1,6 +1,7 @@
-{% import '@SyliusAdmin/Macro/breadcrumb.html.twig' as breadcrumb %}
+{% import '@SyliusAdmin/Shared/Component/_breadcrumbs.html.twig' as breadcrumbsComponent %}
 
-{{ breadcrumb.crumble([
-    { label: 'sylius.ui.administration'|trans, url: path('sylius_admin_dashboard') },
-    { label: 'sylius.ui.inventory'|trans },
-]) }}
+{% set breadcrumbs = [
+    { 'name': 'Dashboard', 'url': path('sylius_admin_dashboard'), 'active': false },
+    { 'name': 'sylius.ui.inventory'|trans, 'active': true },
+] %}
+{{ breadcrumbsComponent.default(breadcrumbs) }}

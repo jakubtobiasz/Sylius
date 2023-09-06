@@ -40,7 +40,6 @@
                         <div class="empty-action">
                             <a href="" class="btn btn-primary">
                                 {{ icon({ icon: 'plus' }) }}
-                                {% dump(configuration.vars.no_result.create) %}
                                 {{ configuration.vars.no_result.create|default('sylius.grid.add_your_first.resource')|trans }}
                             </a>
                         </div>

@@ -1,0 +1,44 @@
+{% import '@SyliusAdmin/Shared/Component/_dropdown.html.twig' as dropdown %}
+{% import '@SyliusAdmin/Shared/Component/_header.html.twig' as header %}
+{% import '@SyliusAdmin/Shared/Component/_breadcrumbs.html.twig' as breadcrumbsComponent %}
+
+<div class="page-header">
+    <div class="container-xl">
+        {% block breadcrumbs %}
+            {# consider refactoring overriding breadcrumbs #}
+            {% set customBreadcrumbsTemplate = configuration.vars.templates.breadcrumb|default(false) %}
+
+            {% if customBreadcrumbsTemplate %}
+                {% include customBreadcrumbsTemplate %}
+            {% else %}
+                {% set defaultBreadcrumbs = [
+                    { 'name': 'Dashboard', 'url': path('sylius_admin_dashboard'), 'active': false },
+                    { 'name': metadata.applicationName~'.ui.'~metadata.pluralName, 'active': true },
+                ] %}
+                {{ breadcrumbsComponent.default(breadcrumbs|default(defaultBreadcrumbs)) }}
+            {% endif %}
+        {% endblock %}
+        <div class="row g-2 mt-2">
+            {% block title %}
+                <div class="col-12 col-md-6">
+                    <div class="d-md-flex gap-2 align-items-center">
+                        {{ header.h1(header|trans) }}
+                    </div>
+                </div>
+            {% endblock %}
+            {% block actions %}
+                {# TODO: Bleh, but forced by the way how Sylius Grid/Resource work :| #}
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    {% if definition.actionGroups.main is defined %}
+                        {% set actions %}
+                            {% for action in definition.getEnabledActions('main') %}
+                                {{ sylius_grid_render_action(resources, action, null) }}
+                            {% endfor %}
+                        {% endset %}
+                        {{ dropdown.default({ content: actions, button: { text: 'Actions' } }) }}
+                    {% endif %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+</div>

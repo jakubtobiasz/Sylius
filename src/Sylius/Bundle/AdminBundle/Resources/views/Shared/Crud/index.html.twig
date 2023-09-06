@@ -9,7 +9,12 @@
 {% block title %}{{ header|trans }} {{ parent() }}{% endblock %}
 
 {% block content %}
-    {{ sylius_template_event([event_prefix, 'sylius.admin.index'], _context) }}
+    {{ sylius_template_event([event_prefix ~ '.header.before', 'sylius.admin.index.header.before']) }}
+    {% include '@SyliusAdmin/Shared/Crud/Common/_header.html.twig' %}
+    {{ sylius_template_event([event_prefix ~ '.header.after', 'sylius.admin.index.header.after']) }}
+    {{ sylius_template_event([event_prefix ~ '.content.before', 'sylius.admin.index.content.before']) }}
+    {% include '@SyliusAdmin/Crud/Index/_content.html.twig' %}
+    {{ sylius_template_event([event_prefix ~ '.content.after', 'sylius.admin.index.content.after']) }}
 {% endblock %}
 
 {% block stylesheets %}
