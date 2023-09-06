@@ -15,4 +15,4 @@ sylius_admin_inventory_index:
                 header: sylius.ui.inventory
                 subheader: sylius.ui.manage_inventory
                 no_result:
-                    create: sylius.grid.create_your_first.inventory
+                    create: sylius.grid.add_your_first.inventory

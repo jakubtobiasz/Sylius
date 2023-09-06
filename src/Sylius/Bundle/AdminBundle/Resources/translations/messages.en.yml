@@ -18,6 +18,7 @@ sylius:
     grid:
         add_your_first:
             inventory: 'Add your first inventory'
+            resource: 'Add your first resource'
         no_results: 'No results found'
         no_results_adjust_your_search: 'Try adjusting your search or filter to find what you''re looking for.'
     menu:
