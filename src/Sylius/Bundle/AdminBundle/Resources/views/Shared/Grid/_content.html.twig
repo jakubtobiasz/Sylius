@@ -4,6 +4,7 @@
 {% set definition = grid.definition %}
 {% set data = grid.data %}
 
+{% set configuration = _context.grid.requestConfiguration.parameters.all() %}
 {% set path = path(app.request.attributes.get('_route'), app.request.attributes.all('_route_params')) %}
 {% set criteria = app.request.query.all('criteria') %}
 
@@ -37,9 +38,10 @@
                             {{ 'sylius.grid.no_results_adjust_your_search'|trans }}
                         </p>
                         <div class="empty-action">
-                            <a href="./." class="btn btn-primary">
+                            <a href="" class="btn btn-primary">
                                 {{ icon({ icon: 'plus' }) }}
-                                {{ 'sylius.grid.add_your_first.inventory'|trans }}
+                                {% dump(configuration.vars.no_result.create) %}
+                                {{ configuration.vars.no_result.create|default('sylius.grid.add_your_first.resource')|trans }}
                             </a>
                         </div>
                     </div>

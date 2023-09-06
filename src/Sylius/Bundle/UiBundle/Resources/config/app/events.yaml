@@ -6,7 +6,7 @@ sylius_ui:
         sylius.grid:
             blocks:
                 content:
-                    template: "@SyliusAdmin/Shared/Layout/Grid/_content.html.twig"
+                    template: "@SyliusAdmin/Shared/Grid/_content.html.twig"
                     priority: 10
 
         sylius.grid.body:
