@@ -65,3 +65,24 @@
     {% set newParams = { text: 'Delete' }|merge(params)|merge({ class: 'btn btn-ghost-danger ' ~ params.class }) %}
     {{ _.default(newParams) }}
 {% endmacro %}
+
+{% macro update(params = {}) %}
+    {% import _self as _ %}
+    {% set params = {
+        type: 'submit',
+        text: 'sylius.ui.save_changes'|trans,
+    }|merge(params) %}
+
+    {{ _.primary(params) }}
+{% endmacro %}
+
+{% macro cancel(params = {}) %}
+    {% import _self as _ %}
+    {% set params = {
+        class: null,
+        text: 'sylius.ui.cancel'|trans,
+        url: app.request.headers.get('referer'),
+    }|merge(params)%}
+
+    {{ _.default(params) }}
+{% endmacro %}
