@@ -5,10 +5,15 @@
 
 {% block title %}{{ header|trans }} {{ parent() }}{% endblock %}
 
-{% form_theme form '@SyliusAdmin/Form/theme.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 
 {% block content %}
-    {{ sylius_template_event([event_prefix, 'sylius.admin.create'], _context) }}
+    {{ sylius_template_event([event_prefix ~ '.header.before', 'sylius.admin.create.header.before']) }}
+    {% include '@SyliusAdmin/Shared/Crud/Common/_header.html.twig' %}
+    {{ sylius_template_event([event_prefix ~ '.header.after', 'sylius.admin.create.header.after']) }}
+    {{ sylius_template_event([event_prefix ~ '.content.before', 'sylius.admin.create.content.before']) }}
+    {% include '@SyliusAdmin/Shared/Crud/Create/_content.html.twig' %}
+    {{ sylius_template_event([event_prefix ~ '.content.after', 'sylius.admin.create.content.after']) }}
 {% endblock %}
 
 {% block stylesheets %}

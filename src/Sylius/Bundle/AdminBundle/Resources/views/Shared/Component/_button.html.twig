@@ -66,6 +66,16 @@
     {{ _.default(newParams) }}
 {% endmacro %}
 
+{% macro create(params = {}) %}
+    {% import _self as _ %}
+    {% set params = {
+        type: 'submit',
+        text: 'sylius.ui.create'|trans,
+    }|merge(params) %}
+
+    {{ _.primary(params) }}
+{% endmacro %}
+
 {% macro update(params = {}) %}
     {% import _self as _ %}
     {% set params = {
