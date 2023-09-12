@@ -259,6 +259,15 @@ final class ManagingProductsContext implements Context
     }
 
     /**
+     * @When /^I am browsing the (\d+)(?:st|nd|rd|th) page of products from ("([^"]+)" taxon)$/
+     * @When /^I go to the (\d+)(?:st|nd|rd|th) page of products from ("([^"]+)" taxon)$/
+     */
+    public function iAmBrowsingProductsFromTaxonPage(int $page, TaxonInterface $taxon): void
+    {
+        $this->indexPerTaxonPage->open(['taxonId' => $taxon->getId(), 'page' => $page]);
+    }
+
+    /**
      * @When I filter them by :taxonName taxon
      */
     public function iFilterThemByTaxon($taxonName)
@@ -309,6 +318,52 @@ final class ManagingProductsContext implements Context
     }
 
     /**
+     * @Then /^the (\d+)(?:st|nd|rd|th) product on this page should be named "([^"]+)"$/
+     */
+    public function theNthProductOnThisPageShouldBeNamed(int $position, string $value): void
+    {
+        $values = $this->indexPerTaxonPage->getColumnFields('name');
+
+        Assert::same($values[$position - 1], $value);
+
+        $this->sharedStorage->set('product_taxon_name', $value);
+    }
+
+    /**
+     * @Then this product should be at position :position
+     */
+    public function theNthProductOnThisPageShouldBeAtPosition(int $position): void
+    {
+        $productName = $this->sharedStorage->get('product_taxon_name');
+        Assert::same($this->indexPerTaxonPage->getProductPosition($productName), $position);
+    }
+
+    /**
+     * @Then the one before last product on the list should have :field :value
+     */
+    public function theOneBeforeLastProductOnTheListShouldHave(string $field, string $value): void
+    {
+        $values = $this->indexPerTaxonPage->getColumnFields($field);
+
+        Assert::same($values[count($values) - 2], $value);
+
+        $this->sharedStorage->set('product_taxon_name', $value);
+    }
+
+    /**
+     * @Then the one before last product on the list should have name :productName with position :position
+     */
+    public function theOneBeforeLastProductOnTheListShouldHaveNameWithPosition(string $productName, int $position): void
+    {
+        $productNames = $this->indexPerTaxonPage->getColumnFields('name');
+
+        Assert::same($productNames[count($productNames) - 2], $productName);
+        Assert::same($this->indexPerTaxonPage->getProductPosition($productName), $position);
+
+        $this->sharedStorage->set('product_taxon_name', $productName);
+    }
+
+    /**
      * @Then the last product on the list should have :field :value
      */
     public function theLastProductOnTheListShouldHave($field, $value)
@@ -316,6 +371,21 @@ final class ManagingProductsContext implements Context
         $values = $this->indexPerTaxonPage->getColumnFields($field);
 
         Assert::same(end($values), $value);
+
+        $this->sharedStorage->set('product_taxon_name', $value);
+    }
+
+    /**
+     * @Then the last product on the list should have name :productName with position :position
+     */
+    public function theLastProductOnTheListShouldHaveNameWithPosition(string $productName, int $position): void
+    {
+        $productNames = $this->indexPerTaxonPage->getColumnFields('name');
+
+        Assert::same(end($productNames), $productName);
+        Assert::same($this->indexPerTaxonPage->getProductPosition($productName), $position);
+
+        $this->sharedStorage->set('product_taxon_name', $productName);
     }
 
     /**
@@ -370,6 +440,7 @@ final class ManagingProductsContext implements Context
     /**
      * @When I want to modify the :product product
      * @When /^I want to modify (this product)$/
+     * @When /^I want to edit (this product)$/
      * @When I modify the :product product
      */
     public function iWantToModifyAProduct(ProductInterface $product): void
@@ -593,6 +664,37 @@ final class ManagingProductsContext implements Context
         $currentPage = $this->resolveCurrentPage();
 
         $currentPage->nameItIn('', $language);
+    }
+
+    /**
+     * @When I want to choose main taxon for product :product
+     */
+    public function iWantToChooseMainTaxonForProduct(ProductInterface $product): void
+    {
+        $this->iWantToModifyAProduct($product);
+
+        $currentPage = $this->resolveCurrentPage();
+        $currentPage->open(['id' => $product->getId()]);
+    }
+
+    /**
+     * @Then I should be able to choose taxon :taxonName from the list
+     */
+    public function iShouldBeAbleToChooseTaxonForThisProduct(string $taxonName): void
+    {
+        $currentPage = $this->resolveCurrentPage();
+
+        Assert::true($currentPage->isTaxonVisibleInMainTaxonList($taxonName));
+    }
+
+    /**
+     * @Then I should not be able to choose taxon :taxonName from the list
+     */
+    public function iShouldNotBeAbleToChooseTaxonForThisProduct(string $taxonName): void
+    {
+        $currentPage = $this->resolveCurrentPage();
+
+        Assert::false($currentPage->isTaxonVisibleInMainTaxonList($taxonName));
     }
 
     /**
@@ -1197,6 +1299,36 @@ final class ManagingProductsContext implements Context
     {
         Assert::true($this->indexPage->isEnabledFilterApplied());
         Assert::eq($this->indexPage->getPageNumber(), $page);
+    }
+
+    /**
+     * @Then the show product's page button should be enabled
+     */
+    public function theShowProductsPageButtonShouldBeEnabled(): void
+    {
+        Assert::false($this->updateSimpleProductPage->isShowInShopButtonDisabled());
+    }
+
+    /**
+     * @Then the show product's page button should be disabled
+     */
+    public function theShowProductsPageButtonShouldBeDisabled(): void
+    {
+        Assert::true($this->updateSimpleProductPage->isShowInShopButtonDisabled());
+    }
+
+    /**
+     * @Then /^it should be leading to (the product)'s page in the ("[^"]+" locale)$/
+     */
+    public function itShouldBeLeadingToTheProductPageInTheLocale(ProductInterface $product, string $localeCode): void
+    {
+        $productTranslation = $product->getTranslation($localeCode);
+        $showProductPageUrl = $this->updateSimpleProductPage->getShowProductInSingleChannelUrl();
+
+        Assert::contains(
+            $showProductPageUrl,
+            sprintf('/%s/products/%s', $localeCode, $productTranslation->getSlug()),
+        );
     }
 
     /**

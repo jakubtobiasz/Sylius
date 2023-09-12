@@ -1,5 +1,8 @@
 # UPGRADE FROM `v1.12.X` TO `v1.13.0`
 
+1. Class `Sylius\Bundle\ProductBundle\Form\Type\ProductOptionChoiceType` has been deprecated.
+   Use `Sylius\Bundle\ProductBundle\Form\Type\ProductOptionAutocompleteType` instead.
+
 1. Starting with Sylius 1.13, the `SyliusPriceHistoryPlugin` is included.
    If you are currently using the plugin in your project, we recommend following the upgrade guide located [here](UPGRADE-FROM-1.12-WITH-PRICE-HISTORY-PLUGIN-TO-1.13.md).
 
@@ -55,6 +58,14 @@
 1. Not passing an instance of `Symfony\Component\PropertyAccess\PropertyAccessorInterface`
    to `Sylius\Bundle\CoreBundle\Validator\Constraints\HasEnabledEntityValidator`
    as the second argument is deprecated.
+
+1. Not passing an instance of `Sylius\Component\Core\Payment\Remover\OrderPaymentsRemoverInterface`
+   and a collection of unprocessable order states to `Sylius\Component\Core\OrderProcessing\OrderPaymentProcessor`
+   as the third and fourth arguments respectively is deprecated.
+
+1. Not passing an instance of `Sylius\Component\Core\Distributor\ProportionalIntegerDistributorInterface`
+   to `Sylius\Component\Core\Taxation\Applicator\OrderItemsTaxesApplicator` and to `Sylius\Component\Core\Taxation\Applicator\OrderItemUnitsTaxesApplicator`
+   as the last argument is deprecated.
 
 1. Class `\Sylius\Bundle\ShopBundle\Calculator\OrderItemsSubtotalCalculator` has been deprecated. Order items subtotal calculation
    is now available on the Order model `\Sylius\Component\Core\Model\Order::getItemsSubtotal`.
@@ -114,3 +125,15 @@
 
    All internal usages of service `sylius.product_variant_resolver.default` have been switched to `Sylius\Component\Product\Resolver\ProductVariantResolverInterface`, if you have been using the
    `sylius.product_variant_resolver.default` service apply this change accordingly.
+
+1. Due to optimizations of the Order's grid the `Sylius\Component\Core\Repository\OrderRepositoryInterface::createSearchListQueryBuilder` method bas been deprecated and replaced by `Sylius\Component\Core\Repository\OrderRepositoryInterface::createCriteriaAwareSearchListQueryBuilder`.
+   Also `Sylius\Component\Core\Repository\OrderRepositoryInterface::createByCustomerIdQueryBuilder` has been deprecated and replaced by `Sylius\Component\Core\Repository\OrderRepositoryInterface::createByCustomerIdCriteriaAwareQueryBuilder` for the same reason. Both changes affect
+   `sylius_admin_order` and `sylius_admin_customer_order` grids configuration.
+
+1. We have explicitly added relationships between product and reviews and between product and attributes in XML mappings.
+   Because of that, the subscribers `Sylius\Bundle\AttributeBundle\Doctrine\ORM\Subscriber\LoadMetadataSubscriber` 
+   and `Sylius\Bundle\ReviewBundle\Doctrine\ORM\Subscriber\LoadMetadataSubscriber` have changed so that it does not add 
+   a relationship if one already exists. If you have overwritten or decorated it, there may be a need to update it. 
+
+1. Passing an instance of `Sylius\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface` as the first argument
+    to `Sylius\Bundle\AttributeBundle\Form\Type\AttributeType\Configuration\SelectAttributeChoicesCollectionType` has been deprecated.

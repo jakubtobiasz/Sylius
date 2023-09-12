@@ -193,9 +193,9 @@ final class ManagingTaxonsContext implements Context
     }
 
     /**
-     * @Then the code field should be disabled
+     * @Then I should not be able to edit its code
      */
-    public function theCodeFieldShouldBeDisabled()
+    public function iShouldNotBeAbleToEditItsCode(): void
     {
         Assert::true($this->updatePage->isCodeDisabled());
     }
@@ -207,7 +207,7 @@ final class ManagingTaxonsContext implements Context
     {
         $this->updatePage->open(['id' => $taxon->getId()]);
 
-        Assert::true($this->updatePage->hasResourceValues(['slug' => $slug]));
+        Assert::same($this->updatePage->getSlug(), $slug);
     }
 
     /**

@@ -1,5 +1,62 @@
 # CHANGELOG FOR `1.12.X`
 
+## v1.12.10 (2023-08-11)
+
+#### Details
+
+- [#12502](https://github.com/Sylius/Sylius/issues/12502) Recalculate order adjustments total after adjustment is added or remo… ([@kayue](https://github.com/kayue), [@SirDomin](https://github.com/SirDomin), [@TheMilek](https://github.com/TheMilek))
+- [#15128](https://github.com/Sylius/Sylius/issues/15128) [Docs] Sylius Plus installation guide update ([@Rafikooo](https://github.com/Rafikooo))
+- [#15148](https://github.com/Sylius/Sylius/issues/15148) Fix rendering admin creation form with errors ([@jakubtobiasz](https://github.com/jakubtobiasz), [@NoResponseMate](https://github.com/NoResponseMate))
+- [#15162](https://github.com/Sylius/Sylius/issues/15162) Abstracts out ShopBasedCartContext::reset to an interface ([@palttamas](https://github.com/palttamas), [@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15178](https://github.com/Sylius/Sylius/issues/15178) [CS][DX] Refactor ()
+- [#15184](https://github.com/Sylius/Sylius/issues/15184) Cover the order item units based tax calculation strategy with scenarios ([@GSadee](https://github.com/GSadee))
+- [#15185](https://github.com/Sylius/Sylius/issues/15185) Avoid displaying taxon names inside of autocomplete in different locales than the store ([@TheMilek](https://github.com/TheMilek))
+- [#15186](https://github.com/Sylius/Sylius/issues/15186) Add a conflict for doctrine/orm:2.15.4 ([@GSadee](https://github.com/GSadee))
+- [#15187](https://github.com/Sylius/Sylius/issues/15187) [Order] Extract payments removal from OrderPaymentProcessor ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15191](https://github.com/Sylius/Sylius/issues/15191) Readme banner refresh ([@kulczy](https://github.com/kulczy))
+- [#15195](https://github.com/Sylius/Sylius/issues/15195) Fix percentage discount's decimal rounding issue  ([@TheMilek](https://github.com/TheMilek))
+- [#15197](https://github.com/Sylius/Sylius/issues/15197) Add a conflict for doctrine/orm 2.15.2 and higher ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15200](https://github.com/Sylius/Sylius/issues/15200) [Docs] Update order processing info ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15202](https://github.com/Sylius/Sylius/issues/15202) Update catalog_promotions.rst ([@zairigimad](https://github.com/zairigimad))
+- [#15204](https://github.com/Sylius/Sylius/issues/15204) Resolve comments from #15195 ([@TheMilek](https://github.com/TheMilek))
+- [#15205](https://github.com/Sylius/Sylius/issues/15205) [Maintenance] Remove depractions from OrderPaymentProcessor ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15207](https://github.com/Sylius/Sylius/issues/15207) [Behat] Fix minor mistake in names of scenarios for receiving discount according to promotions priorities ([@GSadee](https://github.com/GSadee))
+- [#15213](https://github.com/Sylius/Sylius/issues/15213) Allow installing doctrine/orm 2.15.* ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15214](https://github.com/Sylius/Sylius/issues/15214) Fix configuring amount for catalog promotions fixed discount actions ([@TheMilek](https://github.com/TheMilek))
+- [#15217](https://github.com/Sylius/Sylius/issues/15217) Fix cart styles after coupon form submission failure ([@shochdoerfer](https://github.com/shochdoerfer))
+
+## v1.12.9 (2023-07-21)
+
+#### Details
+
+- [#12555](https://github.com/Sylius/Sylius/issues/12555) Fix misleading signing in the admin panel feature description ([@Mateuszry](https://github.com/Mateuszry))
+- [#13824](https://github.com/Sylius/Sylius/issues/13824) Calculate tax with decimal precision and distribute proportionally across order items ([@vvasiloi](https://github.com/vvasiloi), [@GSadee](https://github.com/GSadee), [@TheMilek](https://github.com/TheMilek))
+- [#15014](https://github.com/Sylius/Sylius/issues/15014) Change prority for custom ChannelContext ([@l-vo](https://github.com/l-vo))
+- [#15037](https://github.com/Sylius/Sylius/issues/15037) [Docs] add image to entity via one-to-one association ([@vvasiloi](https://github.com/vvasiloi))
+- [#15059](https://github.com/Sylius/Sylius/issues/15059) Upgrade PHPStan to level 5 ([@lruozzi9](https://github.com/lruozzi9))
+- [#15064](https://github.com/Sylius/Sylius/issues/15064) [Orders][API] Validate endpoints ([@Rafikooo](https://github.com/Rafikooo))
+- [#15065](https://github.com/Sylius/Sylius/issues/15065) [CS][DX] Refactor ([@github-actions](https://github.com/github-actions)[[@bot](https://github.com/bot)])
+- [#15069](https://github.com/Sylius/Sylius/issues/15069) [Psalm] CacheableSupportsMethodInterface in the deprecation list ([@Rafikooo](https://github.com/Rafikooo))
+- [#15075](https://github.com/Sylius/Sylius/issues/15075) Add a conflict for doctrine/orm:2.15.2 ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15076](https://github.com/Sylius/Sylius/issues/15076) [CS][DX] Refactor ([@github-actions](https://github.com/github-actions)[[@bot](https://github.com/bot)])
+- [#15079](https://github.com/Sylius/Sylius/issues/15079) Upgrade PHPStan to level 6 ([@lruozzi9](https://github.com/lruozzi9))
+- [#15086](https://github.com/Sylius/Sylius/issues/15086) [Fixture] Improve LazyOption performance ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15088](https://github.com/Sylius/Sylius/issues/15088) [Promotion] Ignore coupon based promotions when when processing an order with no coupon  ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15101](https://github.com/Sylius/Sylius/issues/15101) [Maintenance] Launch of `Sylius Sp. z o.o.` copyright owner across project files ([@Rafikooo](https://github.com/Rafikooo))
+- [#15110](https://github.com/Sylius/Sylius/issues/15110) Include children taxons while executing InForTaxonsScopeVariantChecker ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15116](https://github.com/Sylius/Sylius/issues/15116) Ignore ApiPlatform\Core\Api\IriConverterInterface DeprecatedClass Psalm error ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15118](https://github.com/Sylius/Sylius/issues/15118) Fix CI ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15130](https://github.com/Sylius/Sylius/issues/15130) Add conflict to symfony/validator 5.4.25, 6.2.12 and 6.3.1 ([@TheMilek](https://github.com/TheMilek))
+- [#15137](https://github.com/Sylius/Sylius/issues/15137) [Maintenance] Improve ProportionalIntegerDistributor to keep original index ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15139](https://github.com/Sylius/Sylius/issues/15139) Fix "Show product in the shop page" button ([@mamazu](https://github.com/mamazu), [@jakubtobiasz](https://github.com/jakubtobiasz), [@GSadee](https://github.com/GSadee))
+- [#15145](https://github.com/Sylius/Sylius/issues/15145) [Bunnyshell] Adjust the workflows for Fork PRs ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15147](https://github.com/Sylius/Sylius/issues/15147) [Behat] Minor improvements for accessing shop product page scenarios ([@GSadee](https://github.com/GSadee))
+- [#15154](https://github.com/Sylius/Sylius/issues/15154) Add a conflict for "stof/doctrine-extensions-bundle": "1.8.0" ([@jakubtobiasz](https://github.com/jakubtobiasz))
+- [#15157](https://github.com/Sylius/Sylius/issues/15157) [Issue 15151] - Check manager before refreshing object ([@ulinskas](https://github.com/ulinskas))
+- [#15161](https://github.com/Sylius/Sylius/issues/15161) [API] Product filter no longer crashes when using multiple taxons ([@palttamas](https://github.com/palttamas))
+- [#15165](https://github.com/Sylius/Sylius/issues/15165) [API] Fix CommandDenormalizer ignoring custom property names ([@NoResponseMate](https://github.com/NoResponseMate))
+- [#15170](https://github.com/Sylius/Sylius/issues/15170) Prevent placing an order with a disabled shipping method ([@jakubtobiasz](https://github.com/jakubtobiasz))
+
 ## v1.12.8 (2023-05-25)
 
 #### Details

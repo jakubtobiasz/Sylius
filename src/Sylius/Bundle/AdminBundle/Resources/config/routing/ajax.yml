@@ -6,6 +6,10 @@ sylius_admin_ajax_product:
     resource: "@SyliusAdminBundle/Resources/config/routing/ajax/product.yml"
     prefix: /products
 
+sylius_admin_ajax_product_attribute:
+    resource: "@SyliusAdminBundle/Resources/config/routing/ajax/product_attribute.yml"
+    prefix: /product-attributes
+
 sylius_admin_ajax_product_taxon:
     resource: "@SyliusAdminBundle/Resources/config/routing/ajax/product_taxon.yml"
     prefix: /product-taxons
@@ -17,6 +21,10 @@ sylius_admin_ajax_product_variant:
 sylius_admin_ajax_customer_group:
     resource: "@SyliusAdminBundle/Resources/config/routing/ajax/customer_group.yml"
     prefix: /customer-groups
+
+sylius_admin_ajax_product_option:
+    resource: "@SyliusAdminBundle/Resources/config/routing/ajax/product_option.yml"
+    prefix: /product-options
 
 sylius_admin_ajax_render_province_form:
     path: /render-province-form

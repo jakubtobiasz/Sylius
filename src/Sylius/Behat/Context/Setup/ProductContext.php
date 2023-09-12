@@ -24,6 +24,7 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductImageInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductTaxonInterface;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
@@ -58,6 +59,7 @@ final class ProductContext implements Context
         private FactoryInterface $productOptionFactory,
         private FactoryInterface $productOptionValueFactory,
         private FactoryInterface $productImageFactory,
+        private FactoryInterface $productTaxonFactory,
         private ObjectManager $objectManager,
         private ProductVariantGeneratorInterface $productVariantGenerator,
         private ProductVariantRepositoryInterface $productVariantRepository,
@@ -108,6 +110,22 @@ final class ProductContext implements Context
     ): void {
         $product = $this->createProduct($productName);
         $this->productTaxonContext->itBelongsTo($product, $taxon);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the store(?:| also) has a product "([^"]+)" in the ("[^"]+" taxon) at (\d+)(?:st|nd|rd|th) position$/
+     */
+    public function theStoreHasAProductInTheTaxonAtPosition(
+        string $productName,
+        TaxonInterface $taxon,
+        int $position,
+    ): void {
+        $product = $this->createProduct($productName);
+
+        $productTaxon = $this->createProductTaxon($taxon, $product, $position);
+        $product->addProductTaxon($productTaxon);
 
         $this->saveProduct($product);
     }
@@ -216,6 +234,16 @@ final class ProductContext implements Context
     public function thisProductIsNamedIn(ProductInterface $product, $name, $locale)
     {
         $this->addProductTranslation($product, $name, $locale);
+
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^(this product) has no translation in the "([^"]+)" locale$/
+     */
+    public function thisProductHasNoTranslationIn(ProductInterface $product, $locale): void
+    {
+        $product->removeTranslation($product->getTranslation($locale));
 
         $this->objectManager->flush();
     }
@@ -1304,6 +1332,30 @@ final class ProductContext implements Context
         return $channelPricing;
     }
 
+    /**
+     * @Given /^(this product) has no slug in the ("[^"]+" locale)$/
+     */
+    public function thisProductHasNoSlugInTheLocale(ProductInterface $product, string $localeCode): void
+    {
+        $productTranslation = $product->getTranslation($localeCode);
+        $productTranslation->setSlug('');
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^(this product) has no translations with a defined slug$/
+     */
+    public function thisProductHasNoTranslationsWithADefinedSlug(ProductInterface $product): void
+    {
+        /** @var ProductTranslationInterface $productTranslation */
+        foreach ($product->getTranslations() as $productTranslation) {
+            $productTranslation->setSlug('');
+        }
+
+        $this->saveProduct($product);
+    }
+
     private function getPriceFromString(string $price): int
     {
         return (int) round((float) str_replace(['€', '£', '$'], '', $price) * 100, 2);
@@ -1468,6 +1520,14 @@ final class ProductContext implements Context
         $product->addTranslation($translation);
     }
 
+    private function removeProductTranslation(ProductInterface $product, $locale): void
+    {
+        /** @var ProductTranslationInterface $translation */
+        $translation = $product->getTranslation($locale);
+
+        $product->removeTranslation($translation);
+    }
+
     /**
      * @param string $name
      * @param string $locale
@@ -1537,5 +1597,19 @@ final class ProductContext implements Context
 
         $this->objectManager->persist($product);
         $this->objectManager->flush();
+    }
+
+    private function createProductTaxon(TaxonInterface $taxon, ProductInterface $product, ?int $position = null): ProductTaxonInterface
+    {
+        /** @var ProductTaxonInterface $productTaxon */
+        $productTaxon = $this->productTaxonFactory->createNew();
+        $productTaxon->setProduct($product);
+        $productTaxon->setTaxon($taxon);
+
+        if (null !== $position) {
+            $productTaxon->setPosition($position);
+        }
+
+        return $productTaxon;
     }
 }

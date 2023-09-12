@@ -23,11 +23,19 @@ use Symfony\Component\Form\FormEvents;
 
 class SelectAttributeChoicesCollectionType extends AbstractType
 {
-    private string $defaultLocaleCode;
+    private ?string $defaultLocaleCode = null;
 
-    public function __construct(TranslationLocaleProviderInterface $localeProvider)
+    public function __construct(?TranslationLocaleProviderInterface $localeProvider = null)
     {
-        $this->defaultLocaleCode = $localeProvider->getDefaultLocaleCode();
+        if (null !== $localeProvider) {
+            @trigger_error(sprintf(
+                'Passing an instance of %s as a constructor argument for %s is deprecated as of Sylius 1.13 and will not be possible in 2.0.',
+                TranslationLocaleProviderInterface::class,
+                self::class,
+            ), \E_USER_DEPRECATED);
+
+            $this->defaultLocaleCode = $localeProvider->getDefaultLocaleCode();
+        }
     }
 
     /**
@@ -48,7 +56,7 @@ class SelectAttributeChoicesCollectionType extends AbstractType
                         continue;
                     }
 
-                    if (!array_key_exists($this->defaultLocaleCode, $values)) {
+                    if ($this->defaultLocaleCode !== null && !array_key_exists($this->defaultLocaleCode, $values)) {
                         continue;
                     }
 
@@ -85,6 +93,11 @@ class SelectAttributeChoicesCollectionType extends AbstractType
         return Uuid::uuid1()->toString();
     }
 
+    /**
+     * @param array<array-key, mixed|null> $values
+     *
+     * @return array<string, mixed>
+     */
     private function resolveValues(array $values): array
     {
         $fixedValues = [];

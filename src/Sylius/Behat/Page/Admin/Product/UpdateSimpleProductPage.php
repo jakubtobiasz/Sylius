@@ -130,6 +130,15 @@ class UpdateSimpleProductPage extends BaseUpdatePage implements UpdateSimpleProd
         AutocompleteHelper::chooseValue($this->getSession(), $mainTaxonElement, $taxon->getName());
     }
 
+    public function isTaxonVisibleInMainTaxonList(string $taxonName): bool
+    {
+        $this->openTaxonBookmarks();
+
+        $mainTaxonElement = $this->getElement('main_taxon')->getParent();
+
+        return AutocompleteHelper::isValueVisible($this->getSession(), $mainTaxonElement, $taxonName);
+    }
+
     public function selectProductTaxon(TaxonInterface $taxon): void
     {
         $productTaxonsCodes = [];
@@ -168,8 +177,9 @@ class UpdateSimpleProductPage extends BaseUpdatePage implements UpdateSimpleProd
     public function hasMainTaxonWithName(string $taxonName): bool
     {
         $this->openTaxonBookmarks();
+        $mainTaxonElement = $this->getElement('main_taxon')->getParent();
 
-        return $taxonName === $this->getDocument()->find('css', '.search > .text')->getText();
+        return $taxonName === $mainTaxonElement->find('css', '.search > .text')->getText();
     }
 
     public function isTaxonChosen(string $taxonName): bool
@@ -413,6 +423,11 @@ class UpdateSimpleProductPage extends BaseUpdatePage implements UpdateSimpleProd
         return null !== $this->getDocument()->find('css', '.tab > h3:contains("Inventory")');
     }
 
+    public function getShowProductInSingleChannelUrl(): string
+    {
+        return $this->getElement('show_product_single_button')->getAttribute('href');
+    }
+
     public function isShowInShopButtonDisabled(): bool
     {
         return $this->getElement('show_product_single_button')->hasClass('disabled');
@@ -487,7 +502,7 @@ class UpdateSimpleProductPage extends BaseUpdatePage implements UpdateSimpleProd
             'product_taxons' => '#sylius_product_productTaxons',
             'shipping_required' => '#sylius_product_variant_shippingRequired',
             'show_product_dropdown' => '.scrolling.menu',
-            'show_product_single_button' => 'a:contains("Show product in shop page")',
+            'show_product_single_button' => '[data-test-show-product-in-shop-page]',
             'slug' => '#sylius_product_translations_%locale%_slug',
             'tab' => '.menu [data-tab="%name%"]',
             'taxonomy' => 'a[data-tab="taxonomy"]',

@@ -68,6 +68,31 @@ final class TaxonomyContext implements Context
     }
 
     /**
+     * @Given /^the ("[^"]+" taxon) has child taxon "([^"]+)" in many locales$/
+     */
+    public function theTaxonHasChildrenTaxonsInManyLocales(TaxonInterface $taxon, string $childTaxonName): void
+    {
+        $translationMap = [
+            'en_US' => $childTaxonName,
+            'fr_FR' => $childTaxonName . '_FR',
+            'de_DE' => $childTaxonName . '_DE',
+            'es_ES' => $childTaxonName . '_ES',
+            'pl_PL' => $childTaxonName . '_PL',
+            'pt_PT' => $childTaxonName . '_PT',
+            'uk_UA' => $childTaxonName . '_UA',
+            'cn_CN' => $childTaxonName . '_CN',
+            'ja_JP' => $childTaxonName . '_JP',
+            'bg_BG' => $childTaxonName . '_BG',
+            'da_DK' => $childTaxonName . '_DK',
+        ];
+
+        $taxon->addChild($this->createTaxonInManyLanguages($translationMap));
+
+        $this->objectManager->persist($taxon);
+        $this->objectManager->flush();
+    }
+
+    /**
      * @Given /^the ("[^"]+" taxon)(?:| also) has an image "([^"]+)" with "([^"]+)" type$/
      */
     public function theTaxonHasAnImageWithType(TaxonInterface $taxon, $imagePath, $imageType)
@@ -95,7 +120,7 @@ final class TaxonomyContext implements Context
     public function theTaxonHasChildrenTaxonAnd(TaxonInterface $taxon, string ...$taxonsNames): void
     {
         foreach ($taxonsNames as $taxonName) {
-            $taxon->addChild($this->createTaxon($taxonName));
+            $taxon->addChild($this->createChildTaxon($taxonName, $taxon));
         }
 
         $this->objectManager->persist($taxon);
@@ -131,6 +156,15 @@ final class TaxonomyContext implements Context
         $taxon->setSlug($this->taxonSlugGenerator->generate($taxon));
 
         return $taxon;
+    }
+
+    private function createChildTaxon(string $name, TaxonInterface $parent): TaxonInterface
+    {
+        $child = $this->createTaxon($name);
+        $child->setParent($parent);
+        $child->setSlug($this->taxonSlugGenerator->generate($child));
+
+        return $child;
     }
 
     /**

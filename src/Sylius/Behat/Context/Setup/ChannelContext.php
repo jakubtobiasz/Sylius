@@ -25,6 +25,8 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopBillingData;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Core\Test\Services\DefaultChannelFactoryInterface;
+use Sylius\Component\Locale\Model\LocaleInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class ChannelContext implements Context
 {
@@ -35,6 +37,7 @@ final class ChannelContext implements Context
         private DefaultChannelFactoryInterface $defaultChannelFactory,
         private ChannelRepositoryInterface $channelRepository,
         private ObjectManager $channelManager,
+        private RepositoryInterface $localeRepository,
     ) {
     }
 
@@ -93,6 +96,17 @@ final class ChannelContext implements Context
     public function storeOperatesOnASingleChannel($currencyCode = null)
     {
         $defaultData = $this->defaultChannelFactory->create(null, null, $currencyCode);
+
+        $this->sharedStorage->setClipboard($defaultData);
+        $this->sharedStorage->set('channel', $defaultData['channel']);
+    }
+
+    /**
+     * @Given the store operates on a single channel in :localeCode locale
+     */
+    public function storeOperatesOnASingleChannelInLocale(string $localeCode): void
+    {
+        $defaultData = $this->defaultChannelFactory->create(localeCode: $localeCode);
 
         $this->sharedStorage->setClipboard($defaultData);
         $this->sharedStorage->set('channel', $defaultData['channel']);
@@ -198,9 +212,19 @@ final class ChannelContext implements Context
     /**
      * @Given /^on (this channel) account verification is not required$/
      */
-    public function onThisChannelAccountVerificationIsNotRequired(ChannelInterface $channel)
+    public function onThisChannelAccountVerificationIsNotRequired(ChannelInterface $channel): void
     {
         $channel->setAccountVerificationRequired(false);
+
+        $this->channelManager->flush();
+    }
+
+    /**
+     * @Given /^on (this channel) account verification is required$/
+     */
+    public function onThisChannelAccountVerificationIsRequired(ChannelInterface $channel): void
+    {
+        $channel->setAccountVerificationRequired(true);
 
         $this->channelManager->flush();
     }
@@ -318,6 +342,30 @@ final class ChannelContext implements Context
     public function theLowestPriceOfDiscountedProductsPriorToTheCurrentDiscountIsDisabledOnThisChannel(ChannelInterface $channel): void
     {
         $channel->getChannelPriceHistoryConfig()->setLowestPriceForDiscountedProductsVisible(false);
+    }
+
+    /**
+     * @Given the store also operates in :locale locale
+     */
+    public function theStoreAlsoOperatesInLocale(LocaleInterface $locale): void
+    {
+        /** @var ChannelInterface $channel */
+        $channel = $this->sharedStorage->get('channel');
+        $channel->addLocale($locale);
+
+        $this->channelManager->flush();
+    }
+
+    /**
+     * @Given the store uses the :taxCalculationStrategy tax calculation strategy
+     */
+    public function theStoreUsesTheTaxCalculationStrategy(string $taxCalculationStrategy): void
+    {
+        /** @var ChannelInterface $channel */
+        $channel = $this->sharedStorage->get('channel');
+        $channel->setTaxCalculationStrategy(StringInflector::nameToLowercaseCode($taxCalculationStrategy));
+
+        $this->channelManager->flush();
     }
 
     /**

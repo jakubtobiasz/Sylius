@@ -12,7 +12,6 @@
         <directory name="src" />
         <ignoreFiles>
             <file name="src/Sylius/Bundle/CoreBundle/Application/Kernel.php" />
-            <file name="src/Sylius/Bundle/ApiBundle/ApiPlatform/Bridge/Symfony/Bundle/Action/SwaggerUiAction.php" />
 
             <directory name="src/Sylius/Behat" />
 
@@ -82,6 +81,7 @@
         <DeprecatedMethod>
             <errorLevel type="info">
                 <referencedMethod name="Faker\Generator::__get"/>
+                <referencedMethod name="HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface::getUsername" />
                 <referencedMethod name="Payum\Core\Model\GatewayConfigInterface::setFactoryName" />
                 <referencedMethod name="Sylius\Component\Mailer\Sender\SenderInterface::send"/>
                 <referencedMethod name="Symfony\Component\HttpFoundation\JsonResponse::create" /> <!-- deprecated in Symfony 5.1 -->
@@ -252,6 +252,7 @@
                 <referencedFunction name="Symfony\Component\HttpKernel\Config\FileLocator::__construct" />
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
                 <referencedFunction name="Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken::__construct" /> <!-- removed parameter in Symfony 5.4 -->
+                <referencedFunction name="Symfony\Component\Serializer\NameConverter\NameConverterInterface::normalize" />
             </errorLevel>
             <errorLevel type="suppress">
                 <referencedFunction name="Doctrine\ORM\Query\Expr::andX" />
